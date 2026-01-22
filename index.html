@@ -16,6 +16,25 @@
       --pfp-size: 170px;
     }
 
+    /* THEME VARIATIONS */
+    [data-theme="white"] {
+      --bg: #ffffff;
+      --accent: #000000;
+      --glow: rgba(0,0,0,0.6);
+      --text: #000000;
+      --button-bg: rgba(0,0,0,0.08);
+      --button-hover: rgba(0,0,0,0.18);
+    }
+
+    [data-theme="palestine"] {
+      --bg: #000000;
+      --accent: #ce1126;
+      --glow: rgba(46,139,87,0.6);
+      --text: #ffffff;
+      --button-bg: rgba(46,139,87,0.15);
+      --button-hover: rgba(46,139,87,0.3);
+    }
+
     /* RESET */
     * {
       box-sizing: border-box;
@@ -28,6 +47,26 @@
       background: radial-gradient(circle at top, #111, var(--bg));
       color: var(--text);
       overflow: hidden;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      transition: background 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* PARTICLES */
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.5;
+      box-shadow: 0 0 8px var(--glow);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
     /* DONATE BUTTON TOP-LEFT */
@@ -62,6 +101,71 @@
                   0 0 90px rgba(206,17,38,0.6);
     }
 
+    /* THEME SWITCHER */
+    .theme-switcher {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .theme-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: var(--button-bg);
+      backdrop-filter: blur(12px);
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px var(--glow);
+    }
+
+    .theme-btn.active {
+      box-shadow: 0 0 20px var(--glow), inset 0 0 10px var(--glow);
+    }
+
+    .theme-black { background: linear-gradient(135deg, #000 50%, #fff 50%); }
+    .theme-white { background: linear-gradient(135deg, #fff 50%, #000 50%); }
+    .theme-palestine { background: linear-gradient(135deg, #000 0%, #000 25%, #fff 25%, #fff 50%, #2e8b57 50%, #2e8b57 75%, #ce1126 75%); }
+
+    /* MUSIC CONTROLS */
+    .music-control {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      z-index: 10;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: var(--button-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-size: 14px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .music-control:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px var(--glow);
+    }
+
+    .music-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+    }
+
     /* PROFILE */
     .profile-container {
       height: 100%;
@@ -79,6 +183,12 @@
       box-shadow: 0 0 30px var(--glow),
                   0 0 90px rgba(255,255,255,0.25);
       animation: pulse 2.2s ease-in-out infinite;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.1);
     }
 
     /* SOCIALS TOP-RIGHT */
@@ -112,8 +222,40 @@
 
     /* MOBILE FIXES */
     @media (max-width: 600px) {
-      .top-right { flex-direction: column; }
-      .profile-pic { width: 150px; height: 150px; }
+      .top-right { 
+        flex-direction: column;
+        right: 8px;
+        top: 8px;
+      }
+      .top-left {
+        left: 8px;
+        top: 8px;
+      }
+      .donate-btn {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+      .btn {
+        padding: 12px 16px;
+        font-size: 15px;
+        min-width: 100px;
+        text-align: center;
+      }
+      .profile-pic { 
+        width: 150px; 
+        height: 150px; 
+      }
+      .theme-switcher {
+        bottom: 70px;
+        right: 8px;
+        flex-direction: column;
+      }
+      .music-control {
+        left: 8px;
+        bottom: 8px;
+        padding: 10px 12px;
+        font-size: 13px;
+      }
     }
 
     /* PULSE KEYFRAME */
@@ -139,6 +281,7 @@
   <script>
     const CONFIG = {
       profilePicture: "https://media.discordapp.net/attachments/1450622083364290734/1463935003829473420/Metal029.jpg?ex=6973a337&is=697251b7&hm=b5bd1f7f7bca540621c3dcb6931aedd9e3c5508bfed1861222c8799f017d65ba&=&format=webp&width=1023&height=1023",
+      profileVideoUrl: "", // Add your video URL here
       colours: { background: "#000000", accent: "#ffffff" },
       donate: { enabled: true, url: "https://donate.unrwa.org/", label: "Donate to UNRWA (Palestine)" },
       socials: [
@@ -156,6 +299,15 @@
   <div class="profile-container">
     <img id="pfp" class="profile-pic">
   </div>
+  <div class="theme-switcher">
+    <button class="theme-btn theme-black active" data-theme="black" title="Black Theme"></button>
+    <button class="theme-btn theme-white" data-theme="white" title="White Theme"></button>
+    <button class="theme-btn theme-palestine" data-theme="palestine" title="Palestine Theme"></button>
+  </div>
+  <div class="music-control" id="musicToggle">
+    <span class="music-icon">🔇</span>
+    <span id="musicStatus">Click to play</span>
+  </div>
 
   <script>
     /* COLORS */
@@ -163,7 +315,84 @@
     document.documentElement.style.setProperty("--accent", CONFIG.colours.accent);
 
     /* PROFILE PICTURE */
-    document.getElementById("pfp").src = CONFIG.profilePicture;
+    const pfp = document.getElementById("pfp");
+    pfp.src = CONFIG.profilePicture;
+    
+    // Profile picture click to video
+    if(CONFIG.profileVideoUrl) {
+      pfp.addEventListener("click", () => {
+        window.open(CONFIG.profileVideoUrl, "_blank");
+      });
+    }
+
+    /* THEME SWITCHER */
+    const themeButtons = document.querySelectorAll(".theme-btn");
+    themeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const theme = btn.dataset.theme;
+        document.documentElement.setAttribute("data-theme", theme);
+        themeButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+
+    /* PARTICLES */
+    const particleCount = 50;
+    const particles = [];
+    
+    for(let i = 0; i < particleCount; i++) {
+      const particle = document.createElement("div");
+      particle.className = "particle";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      document.body.appendChild(particle);
+      
+      particles.push({
+        el: particle,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5
+      });
+    }
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateParticles() {
+      particles.forEach(p => {
+        const dx = mouseX - p.x;
+        const dy = mouseY - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if(dist < 150) {
+          p.vx -= dx / dist * 0.1;
+          p.vy -= dy / dist * 0.1;
+        }
+        
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        if(p.x < 0) p.x = window.innerWidth;
+        if(p.x > window.innerWidth) p.x = 0;
+        if(p.y < 0) p.y = window.innerHeight;
+        if(p.y > window.innerHeight) p.y = 0;
+        
+        p.el.style.left = p.x + "px";
+        p.el.style.top = p.y + "px";
+      });
+      
+      requestAnimationFrame(animateParticles);
+    }
+    
+    animateParticles();
 
     /* DONATE BUTTON */
     if(CONFIG.donate.enabled){
@@ -191,8 +420,11 @@
       const audio = new Audio(CONFIG.music.mp3);
       audio.loop = true;
       audio.volume = CONFIG.music.volume;
-      audio.muted = true;
-      audio.play().catch(()=>{}); // try autoplay muted
+      let isPlaying = false;
+
+      const musicToggle = document.getElementById("musicToggle");
+      const musicStatus = document.getElementById("musicStatus");
+      const musicIcon = musicToggle.querySelector(".music-icon");
 
       // Web Audio API for glow pulse
       const ctx = new (window.AudioContext||window.webkitAudioContext)();
@@ -211,18 +443,23 @@
         requestAnimationFrame(pulse);
       };
 
-      const startAudio = () => {
-        ctx.resume();
-        audio.muted = false;
-        audio.play();
-        pulse();
-        document.removeEventListener("click", startAudio);
-        document.removeEventListener("touchstart", startAudio);
-      };
-
-      document.addEventListener("click", startAudio);
-      document.addEventListener("touchstart", startAudio);
+      musicToggle.addEventListener("click", () => {
+        if(!isPlaying) {
+          ctx.resume();
+          audio.play();
+          pulse();
+          isPlaying = true;
+          musicIcon.textContent = "🔊";
+          musicStatus.textContent = "Playing";
+        } else {
+          audio.pause();
+          isPlaying = false;
+          musicIcon.textContent = "🔇";
+          musicStatus.textContent = "Paused";
+        }
+      });
     }
   </script>
 </body>
 </html>
+
