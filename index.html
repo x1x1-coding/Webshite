@@ -6,67 +6,201 @@
 <title>Profile</title>
 
 <style>
+:root {
+  --bg: #000000;
+  --accent: #ffffff;
+  --glow: rgba(255,255,255,0.6);
+  --text: #ffffff;
+  --button-bg: rgba(255,255,255,0.08);
+  --button-hover: rgba(255,255,255,0.18);
+  --pfp-size: 170px;
+}
+
+/* RESET */
+* { box-sizing: border-box; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+
 body {
   margin: 0;
   height: 100vh;
-  background: #000;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: system-ui, sans-serif;
+  background: radial-gradient(circle at top, #111, var(--bg));
+  color: var(--text);
+  overflow: hidden;
 }
 
+/* DONATE BUTTON TOP-LEFT */
 .top-left {
   position: fixed;
   top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 16px;
+  z-index: 10;
 }
 
+.donate-btn {
+  padding: 12px 16px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #000 0%, #000 30%, #fff 30%, #fff 45%, #2e8b57 45%, #2e8b57 70%, #ce1126 70%, #ce1126 100%);
+  box-shadow: 0 0 20px rgba(255,255,255,0.3), 0 0 60px rgba(206,17,38,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.donate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(255,255,255,0.5), 0 0 90px rgba(206,17,38,0.6);
+}
+
+/* PROFILE */
+.profile-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-pic {
+  width: var(--pfp-size);
+  height: var(--pfp-size);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 30px var(--glow), 0 0 90px rgba(255,255,255,0.25);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+/* SOCIALS TOP-RIGHT */
 .top-right {
   position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 16px;
+  right: 16px;
   display: flex;
   gap: 10px;
+  z-index: 10;
 }
 
-.profile-pic {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  border: 2px solid white;
-}
-a {
-  color: white;
-  text-decoration: none;
+.btn {
   padding: 10px 14px;
-  border: 1px solid white;
-  border-radius: 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--button-bg);
+  backdrop-filter: blur(12px);
+  font-size: 14px;
+  box-shadow: 0 0 12px var(--glow), inset 0 0 0 1px rgba(255,255,255,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px var(--glow), 0 0 55px var(--glow);
+}
+
+/* MOBILE FIXES */
+@media (max-width: 600px) {
+  .top-right { flex-direction: column; }
+  .profile-pic { width: 150px; height: 150px; }
+}
+
+/* PULSE KEYFRAME */
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px var(--glow), 0 0 60px rgba(255,255,255,0.25); }
+  50% { box-shadow: 0 0 40px var(--glow), 0 0 90px rgba(255,255,255,0.35); }
+  100% { box-shadow: 0 0 20px var(--glow), 0 0 60px rgba(255,255,255,0.25); }
 }
 </style>
 </head>
-
 <body>
 
-<div class="top-left">
-  <a href="https://donate.unrwa.org/" target="_blank">
-    Donate to UNRWA (Palestine)
-  </a>
+<!-- CONFIG -->
+<script>
+const CONFIG = {
+  profilePicture: "https://media.discordapp.net/attachments/1450622083364290734/1463935003829473420/Metal029.jpg?ex=6973a337&is=697251b7&hm=b5bd1f7f7bca540621c3dcb6931aedd9e3c5508bfed1861222c8799f017d65ba&=&format=webp&width=1023&height=1023",
+
+  colours: { background: "#000000", accent: "#ffffff" },
+
+  donate: { enabled: true, url: "https://donate.unrwa.org/", label: "Donate to UNRWA (Palestine)" },
+
+  socials: [
+    { name: "Discord", enabled: false, url: "https://discord.gg/2kMqjT5Zxa" },
+    { name: "Snapchat", enabled: true, url: "https://www.snapchat.com/add/thomasmortimer?share_id=sVy1oAVIBCQ&locale=en-GB" },
+    { name: "TikTok", enabled: true, url: "https://tiktok.com/@thomasx1x1" }
+  ],
+
+  music: { enabled: true, mp3: "https://audio.jukehost.co.uk/FGNmR5eFf10k0TxuU3sDMFszAa8lTpxy", volume: 1 }
+};
+</script>
+
+<!-- UI -->
+<div class="top-left" id="donate"></div>
+<div class="top-right" id="socials"></div>
+<div class="profile-container">
+  <img id="pfp" class="profile-pic">
 </div>
 
-<img
-  class="profile-pic"
-  src="https://media.discordapp.net/attachments/1450622083364290734/1463935003829473420/Metal029.jpg"
-  alt="pfp"
-/>
+<script>
+/* COLORS */
+document.documentElement.style.setProperty("--bg", CONFIG.colours.background);
+document.documentElement.style.setProperty("--accent", CONFIG.colours.accent);
 
-<div class="top-right">
-  <a href="https://www.snapchat.com/add/thomasmortimer" target="_blank">Snapchat</a>
-  <a href="https://tiktok.com/@thomasx1x1" target="_blank">TikTok</a>
-</div>
+/* PROFILE PICTURE */
+document.getElementById("pfp").src = CONFIG.profilePicture;
+
+/* DONATE BUTTON */
+if(CONFIG.donate.enabled){
+  const d=document.createElement("a");
+  d.className="donate-btn";
+  d.href=CONFIG.donate.url;
+  d.target="_blank";
+  d.textContent=CONFIG.donate.label;
+  document.getElementById("donate").appendChild(d);
+}
+
+/* SOCIAL BUTTONS */
+CONFIG.socials.forEach(s=>{
+  if(!s.enabled || !s.url) return;
+  const b=document.createElement("a");
+  b.className="btn";
+  b.href=s.url;
+  b.target="_blank";
+  b.textContent=s.name;
+  document.getElementById("socials").appendChild(b);
+});
+
+/* BACKGROUND MUSIC + GLOW PULSE */
+if(CONFIG.music.enabled && CONFIG.music.mp3){
+  const audio = new Audio(CONFIG.music.mp3);
+  audio.loop = true;
+  audio.volume = CONFIG.music.volume;
+  audio.muted = true;
+  audio.play().catch(()=>{}); // try autoplay muted
+
+  const ctx = new (window.AudioContext||window.webkitAudioContext)();
+  const source = ctx.createMediaElementSource(audio);
+  const analyser = ctx.createAnalyser();
+  analyser.fftSize = 256;
+  source.connect(analyser);
+  analyser.connect(ctx.destination);
+  const data = new Uint8Array(analyser.frequencyBinCount);
+
+  const pulse = () => {
+    analyser.getByteFrequencyData(data);
+    const avg = data.reduce((a,b)=>a+b,0)/data.length;
+    const glow = Math.min(1, avg/120);
+    document.documentElement.style.setProperty("--glow", `rgba(255,255,255,${0.4 + glow*0.4})`);
+    requestAnimationFrame(pulse);
+  };
+
+  const startAudio = () => {
+    ctx.resume();
+    audio.muted = false;
+    audio.play();
+    pulse();
+    document.removeEventListener("click", startAudio);
+    document.removeEventListener("touchstart", startAudio);
+  };
+
+  document.addEventListener("click", startAudio);
+  document.addEventListener("touchstart", startAudio);
+}
+</script>
 
 </body>
 </html>
