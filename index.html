@@ -86,7 +86,10 @@
     .theme-btn.active { box-shadow: 0 0 20px var(--glow), inset 0 0 10px var(--glow); }
     .theme-black { background: linear-gradient(135deg, #000 50%, #fff 50%) !important; }
     .theme-white { background: linear-gradient(135deg, #fff 50%, #000 50%) !important; }
-    .theme-palestine { background: linear-gradient(135deg, #000 0%, #000 25%, #fff 25%, #fff 50%, #2e8b57 50%, #2e8b57 75%, #ce1126 75%) !important; }
+    .theme-palestine { 
+      background: linear-gradient(to bottom, #000 0%, #000 33.33%, #fff 33.33%, #fff 66.66%, #2e8b57 66.66%, #2e8b57 100%) !important;
+      border: 2px solid #ce1126 !important;
+    }
     .music-control {
       position: fixed;
       bottom: 16px;
@@ -302,7 +305,7 @@
         b.className = "btn";
         b.href = s.url;
         b.target = "_blank";
-        b.innerHTML = ICONS[s.icon] + `<span>${s.name}</span>`;
+        b.innerHTML = (ICONS[s.icon] || '') + `<span>${s.name}</span>`;
         container.appendChild(b);
       });
     });
