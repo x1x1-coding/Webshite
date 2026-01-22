@@ -1,327 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile</title>
-  <style>
-    :root {
-      --bg: #000000;
-      --bg-grad: #111;
-      --text: #ffffff;
-      --btn-bg: rgba(255,255,255,0.08);
-      --btn-hover: rgba(255,255,255,0.18);
-      --pfp-size: 170px;
-    }
-    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-    body {
-      margin: 0;
-      height: 100vh;
-      background: radial-gradient(circle at top, var(--bg-grad), var(--bg));
-      color: var(--text);
-      overflow: hidden;
-      opacity: 0;
-      animation: fadeIn 1s ease forwards;
-    }
-    @keyframes fadeIn { to { opacity: 1; } }
-    .particle {
-      position: fixed;
-      width: 4px;
-      height: 4px;
-      background: #ffffff;
-      border-radius: 50%;
-      pointer-events: none;
-      opacity: 0.5;
-      box-shadow: 0 0 8px rgba(255,255,255,0.6);
-    }
-    .top-left { position: fixed; top: 16px; left: 16px; z-index: 10; }
-    .donate-btn {
-      padding: 12px 16px;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: 600;
-      color: #fff;
-      background: linear-gradient(135deg, #000 0%, #000 30%, #fff 30%, #fff 45%, #2e8b57 45%, #2e8b57 70%, #ce1126 70%, #ce1126 100%);
-      box-shadow: 0 0 20px rgba(255,255,255,0.3), 0 0 60px rgba(206,17,38,0.4);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      cursor: pointer;
-    }
-    .donate-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,255,255,0.5), 0 0 90px rgba(206,17,38,0.6); }
-    .donate-btn:active { transform: translateY(-2px) scale(0.98); }
-    .theme-switcher { position: fixed; bottom: 16px; right: 16px; display: flex; gap: 8px; z-index: 10; }
-    .theme-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid #ffffff;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      background: var(--btn-bg);
-      backdrop-filter: blur(12px);
-    }
-    .theme-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,255,255,0.6); }
-    .theme-btn:active { transform: scale(1.05); }
-    .theme-btn.active { box-shadow: 0 0 20px rgba(255,255,255,0.6), inset 0 0 10px rgba(255,255,255,0.6); }
-    .theme-black { background: linear-gradient(135deg, #000 50%, #fff 50%) !important; }
-    .theme-white { background: linear-gradient(135deg, #fff 50%, #000 50%) !important; }
-    .theme-palestine { 
-      background: linear-gradient(to bottom, #000 0%, #000 33.33%, #f0f0f0 33.33%, #f0f0f0 66.66%, #2e8b57 66.66%, #2e8b57 100%) !important;
-      border: 2px solid #ce1126 !important;
-    }
-    .music-control {
-      position: fixed;
-      bottom: 16px;
-      left: 16px;
-      z-index: 10;
-      padding: 12px 16px;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile</title>
+<style>
+  :root {
+    --bg: #000000;
+    --bg-grad: #111;
+    --text: #ffffff;
+    --btn-bg: rgba(255,255,255,0.08);
+    --pfp-size: 170px;
+  }
+  * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, var(--bg-grad), var(--bg));
+    color: var(--text);
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+  .particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: #ffffff;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.5;
+    box-shadow: 0 0 8px rgba(255,255,255,0.6);
+  }
+  .top-left { position: fixed; top: 16px; left: 16px; z-index: 10; }
+  .donate-btn {
+    padding: 12px 16px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #000 0%, #000 30%, #fff 30%, #fff 45%, #2e8b57 45%, #2e8b57 70%, #ce1126 70%, #ce1126 100%);
+    box-shadow: 0 0 20px rgba(255,255,255,0.3), 0 0 60px rgba(206,17,38,0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+  }
+  .donate-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,255,255,0.5), 0 0 90px rgba(206,17,38,0.6); }
+  .donate-btn:active { transform: translateY(-2px) scale(0.98); }
+
+  .music-control {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    z-index: 10;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: var(--btn-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-size: 14px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .music-control:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,255,255,0.6); }
+  .music-control:active { transform: translateY(-2px) scale(0.98); }
+
+  .profile-container { height: 100%; display: flex; align-items: center; justify-content: center; }
+  .profile-pic {
+    width: var(--pfp-size);
+    height: var(--pfp-size);
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 30px rgba(255,255,255,0.6), 0 0 90px rgba(255,255,255,0.25);
+    animation: pulse 2.2s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  .profile-pic:hover { transform: scale(1.1); }
+  .profile-pic:active { transform: scale(1.05); }
+
+  .top-right { position: fixed; top: 16px; right: 16px; display: flex; gap: 10px; z-index: 10; }
+  .btn {
+    padding: 10px 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    background: var(--btn-bg);
+    backdrop-filter: blur(12px);
+    font-size: 14px;
+    box-shadow: 0 0 12px rgba(255,255,255,0.6), inset 0 0 0 1px rgba(255,255,255,0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255,255,255,0.6), 0 0 55px rgba(255,255,255,0.6); }
+  .btn:active { transform: translateY(-2px) scale(0.98); }
+  .btn-icon { width: 18px; height: 18px; fill: currentColor; }
+
+  .mobile-tab { display: none; }
+  @media (max-width: 600px) {
+    .top-right { display: none; }
+    .music-control { display: none; }
+    .mobile-tab { display: block; position: fixed; top: 70px; right: 8px; z-index: 10; }
+    .mobile-toggle {
+      width: 50px;
+      height: 50px;
       border-radius: 12px;
       background: var(--btn-bg);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255,255,255,0.15);
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      font-size: 14px;
-      color: var(--text);
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-    .music-control:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,255,255,0.6); }
-    .music-control:active { transform: translateY(-2px) scale(0.98); }
-    .profile-container { height: 100%; display: flex; align-items: center; justify-content: center; }
-    .profile-pic {
-      width: var(--pfp-size);
-      height: var(--pfp-size);
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #ffffff;
-      box-shadow: 0 0 30px rgba(255,255,255,0.6), 0 0 90px rgba(255,255,255,0.25);
-      animation: pulse 2.2s ease-in-out infinite;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    .profile-pic:hover { transform: scale(1.1); }
-    .profile-pic:active { transform: scale(1.05); }
-    .top-right { position: fixed; top: 16px; right: 16px; display: flex; gap: 10px; z-index: 10; }
-    .btn {
-      padding: 10px 14px;
-      border-radius: 12px;
-      text-decoration: none;
+      justify-content: center;
+      transition: transform 0.2s ease;
       color: var(--text);
+      font-size: 24px;
+    }
+    .mobile-toggle:active { transform: scale(0.95); }
+    .mobile-content {
+      position: absolute;
+      top: 60px;
+      right: 0;
       background: var(--btn-bg);
-      backdrop-filter: blur(12px);
-      font-size: 14px;
-      box-shadow: 0 0 12px rgba(255,255,255,0.6), inset 0 0 0 1px rgba(255,255,255,0.15);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 12px;
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      gap: 10px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      min-width: 160px;
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255,255,255,0.6), 0 0 55px rgba(255,255,255,0.6); }
-    .btn:active { transform: translateY(-2px) scale(0.98); }
-    .btn-icon { width: 18px; height: 18px; fill: currentColor; }
-    .mobile-tab { display: none; }
-    @media (max-width: 600px) {
-      .top-right { display: none; }
-      .theme-switcher, .music-control { display: none; }
-      .mobile-tab { display: block; position: fixed; top: 70px; right: 8px; z-index: 10; }
-      .mobile-toggle {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
-        background: var(--btn-bg);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255,255,255,0.15);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.2s ease;
-        color: var(--text);
-        font-size: 24px;
-      }
-      .mobile-toggle:active { transform: scale(0.95); }
-      .mobile-content {
-        position: absolute;
-        top: 60px;
-        right: 0;
-        background: var(--btn-bg);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.15);
-        border-radius: 12px;
-        padding: 12px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        opacity: 0;
-        pointer-events: none;
-        transform: translateY(-10px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        min-width: 160px;
-      }
-      .mobile-content.open { opacity: 1; pointer-events: all; transform: translateY(0); }
-      .mobile-content .btn { width: 100%; justify-content: center; padding: 12px 16px; }
-      .mobile-themes { display: flex; gap: 8px; justify-content: center; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
-      .mobile-music { padding: 12px; justify-content: center; }
-      .top-left { left: 8px; top: 8px; }
-      .donate-btn { padding: 10px 12px; font-size: 13px; }
-      .profile-pic { width: 150px; height: 150px; }
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.25); }
-      50% { box-shadow: 0 0 40px rgba(255,255,255,0.6), 0 0 90px rgba(255,255,255,0.35); }
-      100% { box-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.25); }
-    }
-  </style>
+    .mobile-content.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .mobile-content .btn { width: 100%; justify-content: center; padding: 12px 16px; }
+    .top-left { left: 8px; top: 8px; }
+    .donate-btn { padding: 10px 12px; font-size: 13px; }
+    .profile-pic { width: 150px; height: 150px; }
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.25); }
+    50% { box-shadow: 0 0 40px rgba(255,255,255,0.6), 0 0 90px rgba(255,255,255,0.35); }
+    100% { box-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.25); }
+  }
+
+  /* Fixed Palestine Button */
+  .theme-palestine {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ce1126;
+    background: linear-gradient(to bottom, #000 0%, #000 33.33%, #f0f0f0 33.33%, #f0f0f0 66.66%, #2e8b57 66.66%, #2e8b57 100%);
+  }
+</style>
 </head>
 <body>
-  <script>
-    const CONFIG = {
-      profilePicture: "https://media.discordapp.net/attachments/1450622083364290734/1463935003829473420/Metal029.jpg?ex=6973a337&is=697251b7&hm=b5bd1f7f7bca540621c3dcb6931aedd9e3c5508bfed1861222c8799f017d65ba&=&format=webp&width=1023&height=1023",
-      profileVideoUrl: "",
-      donate: { enabled: true, url: "https://donate.unrwa.org/", label: "Donate to UNRWA (Palestine)" },
-      socials: [
-        { name: "Discord", enabled: false, url: "https://discord.gg/2kMqjT5Zxa", icon: "discord" },
-        { name: "Snapchat", enabled: true, url: "https://www.snapchat.com/add/thomasmortimer?share_id=sVy1oAVIBCQ&locale=en-GB", icon: "snapchat" },
-        { name: "TikTok", enabled: true, url: "https://tiktok.com/@thomasx1x1", icon: "tiktok" }
-      ],
-      music: { enabled: true, mp3: "https://audio.jukehost.co.uk/FGNmR5eFf10k0TxuU3sDMFszAa8lTpxy", volume: 1 }
-    };
-    const ICONS = {
-      discord: '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>',
-      snapchat: '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.435-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg>',
-      tiktok: '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>'
-    };
-  </script>
-  <div class="top-left" id="donate"></div>
-  <div class="top-right" id="socials"></div>
-  <div class="mobile-tab">
-    <div class="mobile-toggle" id="mobileToggle">☰</div>
-    <div class="mobile-content" id="mobileContent">
-      <div id="mobileSocials"></div>
-      <div class="mobile-themes">
-        <button class="theme-btn theme-black active" data-theme="black"></button>
-        <button class="theme-btn theme-white" data-theme="white"></button>
-        <button class="theme-btn theme-palestine" data-theme="palestine"></button>
-      </div>
-      <div class="music-control mobile-music">
-        <span>🔇</span>
-        <span id="mobileMusicStatus">Click to play</span>
-      </div>
+<script>
+const CONFIG = {
+  profilePicture: "https://media.discordapp.net/attachments/1450622083364290734/1463935003829473420/Metal029.jpg",
+  donate: { enabled: true, url: "https://donate.unrwa.org/", label: "Donate to UNRWA (Palestine)" },
+  socials: [
+    { name: "Snapchat", enabled: true, url: "https://www.snapchat.com/add/thomasmortimer?share_id=sVy1oAVIBCQ&locale=en-GB", icon: "snapchat" },
+    { name: "TikTok", enabled: true, url: "https://tiktok.com/@thomasx1x1", icon: "tiktok" }
+  ],
+  music: { enabled: true, mp3: "https://audio.jukehost.co.uk/FGNmR5eFf10k0TxuU3sDMFszAa8lTpxy", volume: 1 }
+};
+const ICONS = {
+  snapchat: '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821..."/></svg>',
+  tiktok: '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02..."/></svg>'
+};
+</script>
+
+<div class="top-left" id="donate"></div>
+<div class="top-right" id="socials"></div>
+<div class="mobile-tab">
+  <div class="mobile-toggle" id="mobileToggle">☰</div>
+  <div class="mobile-content" id="mobileContent">
+    <div id="mobileSocials"></div>
+    <div class="music-control mobile-music">
+      <span>🔇</span>
+      <span id="mobileMusicStatus">Click to play</span>
     </div>
   </div>
-  <div class="profile-container"><img id="pfp" class="profile-pic"></div>
-  <div class="theme-switcher">
-    <button class="theme-btn theme-black active" data-theme="black"></button>
-    <button class="theme-btn theme-white" data-theme="white"></button>
-    <button class="theme-btn theme-palestine" data-theme="palestine"></button>
-  </div>
-  <div class="music-control" id="desktopMusic">
-    <span>🔇</span>
-    <span id="desktopMusicStatus">Click to play</span>
-  </div>
-  <script>
-    const pfp = document.getElementById("pfp");
-    pfp.src = CONFIG.profilePicture;
-    if(CONFIG.profileVideoUrl) pfp.onclick = () => window.open(CONFIG.profileVideoUrl, "_blank");
-    
-    document.querySelectorAll(".theme-btn").forEach(btn => {
-      btn.onclick = () => {
-        document.querySelectorAll(".theme-btn").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(`[data-theme="${btn.dataset.theme}"]`).forEach(b => b.classList.add("active"));
-      };
-    });
-    
-    const mobileToggle = document.getElementById("mobileToggle");
-    const mobileContent = document.getElementById("mobileContent");
-    mobileToggle.onclick = () => {
-      mobileContent.classList.toggle("open");
-      mobileToggle.textContent = mobileContent.classList.contains("open") ? "✕" : "☰";
-    };
-    document.addEventListener("click", e => {
-      if (!e.target.closest(".mobile-tab") && mobileContent.classList.contains("open")) {
-        mobileContent.classList.remove("open");
-        mobileToggle.textContent = "☰";
-      }
-    });
-    
-    for(let i = 0; i < 50; i++) {
-      const p = document.createElement("div");
-      p.className = "particle";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-      document.body.appendChild(p);
-      const data = { el: p, x: Math.random() * innerWidth, y: Math.random() * innerHeight, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5 };
-      (function animate() {
-        const dx = (window.mx || innerWidth / 2) - data.x;
-        const dy = (window.my || innerHeight / 2) - data.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if(dist < 150) { data.vx -= dx / dist * 0.1; data.vy -= dy / dist * 0.1; }
-        data.vx *= 0.98; data.vy *= 0.98; data.x += data.vx; data.y += data.vy;
-        if(data.x < 0) data.x = innerWidth; if(data.x > innerWidth) data.x = 0;
-        if(data.y < 0) data.y = innerHeight; if(data.y > innerHeight) data.y = 0;
-        p.style.left = data.x + "px"; p.style.top = data.y + "px";
-        requestAnimationFrame(animate);
-      })();
+</div>
+
+<div class="profile-container"><img id="pfp" class="profile-pic"></div>
+
+<div class="music-control" id="desktopMusic">
+  <span>🔇</span>
+  <span id="desktopMusicStatus">Click to play</span>
+</div>
+
+<div class="theme-palestine" style="position:fixed; bottom:16px; right:16px;"></div>
+
+<script>
+const pfp = document.getElementById("pfp");
+pfp.src = CONFIG.profilePicture;
+
+/* Mobile Toggle */
+const mobileToggle = document.getElementById("mobileToggle");
+const mobileContent = document.getElementById("mobileContent");
+mobileToggle.onclick = () => {
+  mobileContent.classList.toggle("open");
+  mobileToggle.textContent = mobileContent.classList.contains("open") ? "✕" : "☰";
+};
+document.addEventListener("click", e => {
+  if(!e.target.closest(".mobile-tab") && mobileContent.classList.contains("open")) {
+    mobileContent.classList.remove("open");
+    mobileToggle.textContent = "☰";
+  }
+});
+
+/* Particles */
+for(let i=0;i<50;i++){
+  const p=document.createElement("div");p.className="particle";
+  p.style.left=Math.random()*100+"vw";
+  p.style.top=Math.random()*100+"vh";
+  document.body.appendChild(p);
+  const data={el:p,x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5};
+  (function animate(){
+    const dx=(window.mx||innerWidth/2)-data.x;
+    const dy=(window.my||innerHeight/2)-data.y;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist>0 && dist<150){data.vx-=dx/dist*0.1;data.vy-=dy/dist*0.1;}
+    data.vx*=0.98;data.vy*=0.98;data.x+=data.vx;data.y+=data.vy;
+    if(data.x<0)data.x=innerWidth;if(data.x>innerWidth)data.x=0;
+    if(data.y<0)data.y=innerHeight;if(data.y>innerHeight)data.y=0;
+    p.style.left=data.x+"px";p.style.top=data.y+"px";
+    requestAnimationFrame(animate);
+  })();
+}
+document.onmousemove=e=>{window.mx=e.clientX;window.my=e.clientY;};
+
+/* Donate Button */
+if(CONFIG.donate.enabled){
+  const d=document.createElement("a");
+  d.className="donate-btn";
+  d.href=CONFIG.donate.url;
+  d.target="_blank";
+  d.textContent=CONFIG.donate.label;
+  document.getElementById("donate").appendChild(d);
+}
+
+/* Socials */
+CONFIG.socials.forEach(s=>{
+  if(!s.enabled||!s.url) return;
+  [document.getElementById("socials"),document.getElementById("mobileSocials")].forEach(container=>{
+    const b=document.createElement("a");
+    b.className="btn";b.href=s.url;b.target="_blank";
+    b.innerHTML=(ICONS[s.icon]||"")+`<span>${s.name}</span>`;
+    container.appendChild(b);
+  });
+});
+
+/* Music */
+if(CONFIG.music.enabled && CONFIG.music.mp3){
+  const audio=new Audio(CONFIG.music.mp3);
+  audio.loop=true;audio.volume=CONFIG.music.volume;
+  let isPlaying=false;
+  const ctx=new (AudioContext||webkitAudioContext)();
+  const src=ctx.createMediaElementSource(audio);
+  const analyser=ctx.createAnalyser();
+  analyser.fftSize=256;
+  src.connect(analyser);
+  analyser.connect(ctx.destination);
+  const dataArr=new Uint8Array(analyser.frequencyBinCount);
+  const pulse=()=>{analyser.getByteFrequencyData(dataArr);requestAnimationFrame(pulse);};
+  const toggle=()=>{
+    if(!isPlaying){ctx.resume();audio.play();pulse();isPlaying=true;
+      document.querySelectorAll(".music-control span:first-child").forEach(el=>el.textContent="🔊");
+      document.querySelectorAll("[id$='MusicStatus']").forEach(el=>el.textContent="Playing");
+    } else {audio.pause();isPlaying=false;
+      document.querySelectorAll(".music-control span:first-child").forEach(el=>el.textContent="🔇");
+      document.querySelectorAll("[id$='MusicStatus']").forEach(el=>el.textContent="Paused");
     }
-    document.onmousemove = e => { window.mx = e.clientX; window.my = e.clientY; };
-    
-    if(CONFIG.donate.enabled) {
-      const d = document.createElement("a");
-      d.className = "donate-btn";
-      d.href = CONFIG.donate.url;
-      d.target = "_blank";
-      d.textContent = CONFIG.donate.label;
-      document.getElementById("donate").appendChild(d);
-    }
-    
-    CONFIG.socials.forEach(s => {
-      if(!s.enabled || !s.url) return;
-      [document.getElementById("socials"), document.getElementById("mobileSocials")].forEach(container => {
-        const b = document.createElement("a");
-        b.className = "btn";
-        b.href = s.url;
-        b.target = "_blank";
-        b.innerHTML = (ICONS[s.icon] || '') + `<span>${s.name}</span>`;
-        container.appendChild(b);
-      });
-    });
-    
-    if(CONFIG.music.enabled && CONFIG.music.mp3) {
-      const audio = new Audio(CONFIG.music.mp3);
-      audio.loop = true;
-      audio.volume = CONFIG.music.volume;
-      let isPlaying = false;
-      const ctx = new (AudioContext || webkitAudioContext)();
-      const src = ctx.createMediaElementSource(audio);
-      const analyser = ctx.createAnalyser();
-      analyser.fftSize = 256;
-      src.connect(analyser);
-      analyser.connect(ctx.destination);
-      const data = new Uint8Array(analyser.frequencyBinCount);
-      const pulse = () => {
-        analyser.getByteFrequencyData(data);
-        const avg = data.reduce((a, b) => a + b, 0) / data.length;
-        requestAnimationFrame(pulse);
-      };
-      const toggle = () => {
-        if(!isPlaying) {
-          ctx.resume();
-          audio.play();
-          pulse();
-          isPlaying = true;
-          document.querySelectorAll(".music-control span:first-child").forEach(el => el.textContent = "🔊");
-          document.querySelectorAll("[id$='MusicStatus']").forEach(el => el.textContent = "Playing");
-        } else {
-          audio.pause();
-          isPlaying = false;
-          document.querySelectorAll(".music-control span:first-child").forEach(el => el.textContent = "🔇");
-          document.querySelectorAll("[id$='MusicStatus']").forEach(el => el.textContent = "Paused");
-        }
-      };
-      document.getElementById("desktopMusic").onclick = toggle;
-      document.querySelector(".mobile-music").onclick = toggle;
-    }
-  </script>
+  };
+  document.getElementById("desktopMusic").onclick=toggle;
+  document.querySelector(".mobile-music").onclick=toggle;
+}
+</script>
 </body>
 </html>
