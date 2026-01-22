@@ -7,229 +7,165 @@
 
 <style>
 :root {
-  --bg: #000000;
-  --accent: #ffffff;
-  --glow: rgba(255,255,255,0.6);
-  --text: #ffffff;
-  --button-bg: rgba(255,255,255,0.08);
-  --button-hover: rgba(255,255,255,0.18);
-  --pfp-size: 170px;
+  --bg:#000;
+  --accent:#fff;
+  --glow:rgba(255,255,255,.6);
+  --pfp-size:170px;
+  --compact:1;
 }
 
 /* RESET */
-* { box-sizing: border-box; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+*{box-sizing:border-box;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 
-body {
-  margin: 0;
-  height: 100vh;
-  background: radial-gradient(circle at top, #111, var(--bg));
-  color: var(--text);
-  overflow: hidden;
+body{
+  margin:0;
+  height:100vh;
+  background:
+    radial-gradient(circle at center,#111,var(--bg)),
+    linear-gradient(to bottom,
+      rgba(0,0,0,.7),
+      transparent 20%,
+      transparent 80%,
+      rgba(0,0,0,.7)
+    );
+  color:#fff;
+  overflow:hidden;
 }
 
-/* DONATE BUTTON (DESKTOP DEFAULT) */
-.top-left {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  z-index: 10;
+/* CENTER RAIL */
+.center-rail{
+  position:fixed;
+  left:50%;
+  top:0;
+  width:2px;
+  height:100%;
+  background:linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255,255,255,.18),
+    transparent
+  );
+  transform:translateX(-50%);
+  opacity:0;
+  pointer-events:none;
 }
 
-.donate-btn {
-  padding: 12px 16px;
-  border-radius: 14px;
-  text-decoration: none;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg,
-    #000 0%, #000 30%,
-    #fff 30%, #fff 45%,
-    #2e8b57 45%, #2e8b57 70%,
-    #ce1126 70%, #ce1126 100%);
-  box-shadow: 0 0 20px rgba(255,255,255,0.3),
-              0 0 60px rgba(206,17,38,0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* DONATE */
+.top-left{
+  position:fixed;
+  top:16px;
+  left:16px;
+  z-index:10;
 }
-.donate-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(255,255,255,0.5),
-              0 0 90px rgba(206,17,38,0.6);
+.donate-btn{
+  padding:12px 18px;
+  border-radius:14px;
+  font-weight:600;
+  text-decoration:none;
+  color:#fff;
+  background:linear-gradient(135deg,
+    #000 0%,#000 30%,
+    #fff 30%,#fff 45%,
+    #2e8b57 45%,#2e8b57 70%,
+    #ce1126 70%,#ce1126 100%);
+  animation:donatePulse 3.8s ease-in-out infinite;
 }
 
 /* PROFILE */
-.profile-container {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.profile-container{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.profile-pic {
-  width: var(--pfp-size);
-  height: var(--pfp-size);
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--accent);
-  box-shadow: 0 0 30px var(--glow), 0 0 90px rgba(255,255,255,0.25);
-  animation: pulse 2.2s ease-in-out infinite;
-}
-
-/* SOCIALS (DESKTOP DEFAULT) */
-.top-right {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  display: flex;
-  gap: 10px;
-  z-index: 10;
+.profile-pic{
+  width:var(--pfp-size);
+  height:var(--pfp-size);
+  border-radius:50%;
+  border:2px solid var(--accent);
+  object-fit:cover;
+  animation:pfpPulse 2.4s ease-in-out infinite;
 }
 
-.btn {
-  padding: 10px 14px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: var(--text);
-  background: var(--button-bg);
-  backdrop-filter: blur(12px);
-  font-size: 14px;
-  box-shadow: 0 0 12px var(--glow),
-              inset 0 0 0 1px rgba(255,255,255,0.15);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* SOCIALS */
+.top-right{
+  position:fixed;
+  top:16px;
+  right:16px;
+  display:flex;
+  gap:10px;
 }
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 25px var(--glow), 0 0 55px var(--glow);
+.btn{
+  padding:10px 14px;
+  border-radius:12px;
+  text-decoration:none;
+  color:#fff;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);
+  transition:transform .15s ease;
 }
+.btn:active{transform:scale(.94)}
 
-/* ========================= */
-/* MOBILE LAYOUT OVERRIDES   */
-/* ========================= */
-@media (max-width: 600px) {
+/* ================= MOBILE AURA ================= */
+@media(max-width:600px){
 
-  /* Donate → top center */
-  .top-left {
-    top: 16px;
-    left: 50%;
-    transform: translateX(-50%);
+  :root{
+    --pfp-size:148px;
   }
 
-  /* Socials → bottom center */
-  .top-right {
-    top: auto;
-    bottom: 20px;
-    right: 50%;
-    transform: translateX(50%);
-    flex-direction: row;
+  .center-rail{opacity:.35}
+
+  /* Donate top-center */
+  .top-left{
+    left:50%;
+    top:14px;
+    transform:translateX(-50%);
   }
 
-  .profile-pic {
-    width: 150px;
-    height: 150px;
+  /* Socials bottom-center */
+  .top-right{
+    top:auto;
+    bottom:18px;
+    left:50%;
+    right:auto;
+    transform:translateX(-50%);
+    animation:socialSnap .45s ease-out;
+  }
+
+  .btn{
+    font-size:13px;
+    padding:9px 12px;
   }
 }
 
-/* PULSE KEYFRAME */
-@keyframes pulse {
-  0% { box-shadow: 0 0 20px var(--glow), 0 0 60px rgba(255,255,255,0.25); }
-  50% { box-shadow: 0 0 40px var(--glow), 0 0 90px rgba(255,255,255,0.35); }
-  100% { box-shadow: 0 0 20px var(--glow), 0 0 60px rgba(255,255,255,0.25); }
+/* LANDSCAPE MOBILE FIX */
+@media(max-width:900px) and (orientation:landscape){
+  :root{--pfp-size:120px}
+  .top-left{top:8px}
+  .top-right{bottom:8px}
+}
+
+/* ANIMATIONS */
+@keyframes pfpPulse{
+  0%,100%{box-shadow:0 0 20px var(--glow)}
+  50%{box-shadow:0 0 45px var(--glow)}
+}
+@keyframes donatePulse{
+  0%,100%{box-shadow:0 0 25px rgba(255,255,255,.4)}
+  50%{box-shadow:0 0 45px rgba(255,255,255,.7)}
+}
+@keyframes socialSnap{
+  from{transform:translate(-50%,8px);opacity:0}
+  to{transform:translate(-50%,0);opacity:1}
 }
 </style>
 </head>
+
 <body>
-
-<!-- CONFIG -->
-<script>
-const CONFIG = {
-  profilePicture: "https://media.discordapp.net/attachments/1450622083364290734/1463935003829473420/Metal029.jpg",
-
-  colours: { background: "#000000", accent: "#ffffff" },
-
-  donate: { enabled: true, url: "https://donate.unrwa.org/", label: "Donate to UNRWA (Palestine)" },
-
-  socials: [
-    { name: "Discord", enabled: false, url: "https://discord.gg/2kMqjT5Zxa" },
-    { name: "Snapchat", enabled: true, url: "https://www.snapchat.com/add/thomasmortimer" },
-    { name: "TikTok", enabled: true, url: "https://tiktok.com/@thomasx1x1" }
-  ],
-
-  music: { enabled: true, mp3: "https://audio.jukehost.co.uk/FGNmR5eFf10k0TxuU3sDMFszAa8lTpxy", volume: 1 }
-};
-</script>
-
-<div class="top-left" id="donate"></div>
-<div class="top-right" id="socials"></div>
-
-<div class="profile-container">
-  <img id="pfp" class="profile-pic">
-</div>
-
-<script>
-document.documentElement.style.setProperty("--bg", CONFIG.colours.background);
-document.documentElement.style.setProperty("--accent", CONFIG.colours.accent);
-
-document.getElementById("pfp").src = CONFIG.profilePicture;
-
-if(CONFIG.donate.enabled){
-  const d=document.createElement("a");
-  d.className="donate-btn";
-  d.href=CONFIG.donate.url;
-  d.target="_blank";
-  d.textContent=CONFIG.donate.label;
-  document.getElementById("donate").appendChild(d);
-}
-
-CONFIG.socials.forEach(s=>{
-  if(!s.enabled || !s.url) return;
-  const b=document.createElement("a");
-  b.className="btn";
-  b.href=s.url;
-  b.target="_blank";
-  b.textContent=s.name;
-  document.getElementById("socials").appendChild(b);
-});
-
-if(CONFIG.music.enabled && CONFIG.music.mp3){
-  const audio = new Audio(CONFIG.music.mp3);
-  audio.loop = true;
-  audio.volume = CONFIG.music.volume;
-  audio.muted = true;
-  audio.play().catch(()=>{});
-
-  const ctx = new (window.AudioContext||window.webkitAudioContext)();
-  const source = ctx.createMediaElementSource(audio);
-  const analyser = ctx.createAnalyser();
-  analyser.fftSize = 256;
-  source.connect(analyser);
-  analyser.connect(ctx.destination);
-  const data = new Uint8Array(analyser.frequencyBinCount);
-
-  const pulse = () => {
-    analyser.getByteFrequencyData(data);
-    const avg = data.reduce((a,b)=>a+b,0)/data.length;
-    const glow = Math.min(1, avg/120);
-    document.documentElement.style.setProperty(
-      "--glow",
-      `rgba(255,255,255,${0.4 + glow*0.4})`
-    );
-    requestAnimationFrame(pulse);
-  };
-
-  const startAudio = () => {
-    ctx.resume();
-    audio.muted = false;
-    audio.play();
-    pulse();
-    document.removeEventListener("click", startAudio);
-    document.removeEventListener("touchstart", startAudio);
-  };
-
-  document.addEventListener("click", startAudio);
-  document.addEventListener("touchstart", startAudio);
-}
-</script>
-
+<div class="center-rail"></div>
 </body>
 </html>
+
 
 
 
