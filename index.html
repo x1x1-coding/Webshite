@@ -27,7 +27,7 @@ body {
   overflow: hidden;
 }
 
-/* DONATE BUTTON TOP-LEFT */
+/* DONATE BUTTON (DESKTOP DEFAULT) */
 .top-left {
   position: fixed;
   top: 16px;
@@ -41,13 +41,19 @@ body {
   text-decoration: none;
   font-weight: 600;
   color: #fff;
-  background: linear-gradient(135deg, #000 0%, #000 30%, #fff 30%, #fff 45%, #2e8b57 45%, #2e8b57 70%, #ce1126 70%, #ce1126 100%);
-  box-shadow: 0 0 20px rgba(255,255,255,0.3), 0 0 60px rgba(206,17,38,0.4);
+  background: linear-gradient(135deg,
+    #000 0%, #000 30%,
+    #fff 30%, #fff 45%,
+    #2e8b57 45%, #2e8b57 70%,
+    #ce1126 70%, #ce1126 100%);
+  box-shadow: 0 0 20px rgba(255,255,255,0.3),
+              0 0 60px rgba(206,17,38,0.4);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .donate-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(255,255,255,0.5), 0 0 90px rgba(206,17,38,0.6);
+  box-shadow: 0 0 30px rgba(255,255,255,0.5),
+              0 0 90px rgba(206,17,38,0.6);
 }
 
 /* PROFILE */
@@ -67,7 +73,7 @@ body {
   animation: pulse 2.2s ease-in-out infinite;
 }
 
-/* SOCIALS TOP-RIGHT */
+/* SOCIALS (DESKTOP DEFAULT) */
 .top-right {
   position: fixed;
   top: 16px;
@@ -85,7 +91,8 @@ body {
   background: var(--button-bg);
   backdrop-filter: blur(12px);
   font-size: 14px;
-  box-shadow: 0 0 12px var(--glow), inset 0 0 0 1px rgba(255,255,255,0.15);
+  box-shadow: 0 0 12px var(--glow),
+              inset 0 0 0 1px rgba(255,255,255,0.15);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .btn:hover {
@@ -93,10 +100,31 @@ body {
   box-shadow: 0 0 25px var(--glow), 0 0 55px var(--glow);
 }
 
-/* MOBILE FIXES */
+/* ========================= */
+/* MOBILE LAYOUT OVERRIDES   */
+/* ========================= */
 @media (max-width: 600px) {
-  .top-right { flex-direction: column; }
-  .profile-pic { width: 150px; height: 150px; }
+
+  /* Donate → top center */
+  .top-left {
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Socials → bottom center */
+  .top-right {
+    top: auto;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    flex-direction: row;
+  }
+
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+  }
 }
 
 /* PULSE KEYFRAME */
@@ -112,7 +140,7 @@ body {
 <!-- CONFIG -->
 <script>
 const CONFIG = {
-  profilePicture: "https://media.discordapp.net/attachments/1450622083364290734/1463935003829473420/Metal029.jpg?ex=6973a337&is=697251b7&hm=b5bd1f7f7bca540621c3dcb6931aedd9e3c5508bfed1861222c8799f017d65ba&=&format=webp&width=1023&height=1023",
+  profilePicture: "https://media.discordapp.net/attachments/1450622083364290734/1463935003829473420/Metal029.jpg",
 
   colours: { background: "#000000", accent: "#ffffff" },
 
@@ -120,7 +148,7 @@ const CONFIG = {
 
   socials: [
     { name: "Discord", enabled: false, url: "https://discord.gg/2kMqjT5Zxa" },
-    { name: "Snapchat", enabled: true, url: "https://www.snapchat.com/add/thomasmortimer?share_id=sVy1oAVIBCQ&locale=en-GB" },
+    { name: "Snapchat", enabled: true, url: "https://www.snapchat.com/add/thomasmortimer" },
     { name: "TikTok", enabled: true, url: "https://tiktok.com/@thomasx1x1" }
   ],
 
@@ -128,22 +156,19 @@ const CONFIG = {
 };
 </script>
 
-<!-- UI -->
 <div class="top-left" id="donate"></div>
 <div class="top-right" id="socials"></div>
+
 <div class="profile-container">
   <img id="pfp" class="profile-pic">
 </div>
 
 <script>
-/* COLORS */
 document.documentElement.style.setProperty("--bg", CONFIG.colours.background);
 document.documentElement.style.setProperty("--accent", CONFIG.colours.accent);
 
-/* PROFILE PICTURE */
 document.getElementById("pfp").src = CONFIG.profilePicture;
 
-/* DONATE BUTTON */
 if(CONFIG.donate.enabled){
   const d=document.createElement("a");
   d.className="donate-btn";
@@ -153,7 +178,6 @@ if(CONFIG.donate.enabled){
   document.getElementById("donate").appendChild(d);
 }
 
-/* SOCIAL BUTTONS */
 CONFIG.socials.forEach(s=>{
   if(!s.enabled || !s.url) return;
   const b=document.createElement("a");
@@ -164,15 +188,13 @@ CONFIG.socials.forEach(s=>{
   document.getElementById("socials").appendChild(b);
 });
 
-/* BACKGROUND MUSIC + GLOW PULSE */
 if(CONFIG.music.enabled && CONFIG.music.mp3){
   const audio = new Audio(CONFIG.music.mp3);
   audio.loop = true;
   audio.volume = CONFIG.music.volume;
   audio.muted = true;
-  audio.play().catch(()=>{}); // try autoplay muted
+  audio.play().catch(()=>{});
 
-  // Web Audio API for glow pulse
   const ctx = new (window.AudioContext||window.webkitAudioContext)();
   const source = ctx.createMediaElementSource(audio);
   const analyser = ctx.createAnalyser();
@@ -185,7 +207,10 @@ if(CONFIG.music.enabled && CONFIG.music.mp3){
     analyser.getByteFrequencyData(data);
     const avg = data.reduce((a,b)=>a+b,0)/data.length;
     const glow = Math.min(1, avg/120);
-    document.documentElement.style.setProperty("--glow", `rgba(255,255,255,${0.4 + glow*0.4})`);
+    document.documentElement.style.setProperty(
+      "--glow",
+      `rgba(255,255,255,${0.4 + glow*0.4})`
+    );
     requestAnimationFrame(pulse);
   };
 
@@ -205,5 +230,7 @@ if(CONFIG.music.enabled && CONFIG.music.mp3){
 
 </body>
 </html>
+
+
 
 
