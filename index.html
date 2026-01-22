@@ -1,284 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profile</title>
-<style>
-  :root {
-    --bg: #000000;
-    --bg-grad: #111;
-    --text: #ffffff;
-    --btn-bg: rgba(255,255,255,0.08);
-    --pfp-size: 170px;
-  }
-  * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-  body {
-    margin: 0;
-    height: 100vh;
-    background: radial-gradient(circle at top, var(--bg-grad), var(--bg));
-    color: var(--text);
-    overflow: hidden;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards;
-  }
-  @keyframes fadeIn { to { opacity: 1; } }
-  .particle {
-    position: fixed;
-    width: 4px;
-    height: 4px;
-    background: #ffffff;
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 0.5;
-    box-shadow: 0 0 8px rgba(255,255,255,0.6);
-  }
-  .top-left { position: fixed; top: 16px; left: 16px; z-index: 10; }
-  .donate-btn {
-    padding: 12px 16px;
-    border-radius: 14px;
-    text-decoration: none;
-    font-weight: 600;
-    color: #fff;
-    background: linear-gradient(135deg, #000 0%, #000 30%, #fff 30%, #fff 45%, #2e8b57 45%, #2e8b57 70%, #ce1126 70%, #ce1126 100%);
-    box-shadow: 0 0 20px rgba(255,255,255,0.3), 0 0 60px rgba(206,17,38,0.4);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-  }
-  .donate-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,255,255,0.5), 0 0 90px rgba(206,17,38,0.6); }
-  .donate-btn:active { transform: translateY(-2px) scale(0.98); }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
 
-  .music-control {
-    position: fixed;
-    bottom: 16px;
-    left: 16px;
-    z-index: 10;
-    padding: 12px 16px;
-    border-radius: 12px;
-    background: var(--btn-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.15);
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    font-size: 14px;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .music-control:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,255,255,0.6); }
-  .music-control:active { transform: translateY(-2px) scale(0.98); }
+  <style>
+    :root {
+      --bg: #000000;
+      --accent: #ffffff;
+      --glow: rgba(255,255,255,0.6);
+      --text: #ffffff;
+      --button-bg: rgba(255,255,255,0.08);
+      --button-hover: rgba(255,255,255,0.18);
+      --pfp-size: 170px;
+    }
 
-  .profile-container { height: 100%; display: flex; align-items: center; justify-content: center; }
-  .profile-pic {
-    width: var(--pfp-size);
-    height: var(--pfp-size);
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #ffffff;
-    box-shadow: 0 0 30px rgba(255,255,255,0.6), 0 0 90px rgba(255,255,255,0.25);
-    animation: pulse 2.2s ease-in-out infinite;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-  .profile-pic:hover { transform: scale(1.1); }
-  .profile-pic:active { transform: scale(1.05); }
+    /* RESET */
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-  .top-right { position: fixed; top: 16px; right: 16px; display: flex; gap: 10px; z-index: 10; }
-  .btn {
-    padding: 10px 14px;
-    border-radius: 12px;
-    text-decoration: none;
-    color: var(--text);
-    background: var(--btn-bg);
-    backdrop-filter: blur(12px);
-    font-size: 14px;
-    box-shadow: 0 0 12px rgba(255,255,255,0.6), inset 0 0 0 1px rgba(255,255,255,0.15);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255,255,255,0.6), 0 0 55px rgba(255,255,255,0.6); }
-  .btn:active { transform: translateY(-2px) scale(0.98); }
-  .btn-icon { width: 18px; height: 18px; fill: currentColor; }
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at top, #111, var(--bg));
+      color: var(--text);
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+    }
 
-  .mobile-tab { display: none; }
-  @media (max-width: 600px) {
-    .top-right { display: none; }
-    .music-control { display: none; }
-    .mobile-tab { display: block; position: fixed; top: 70px; right: 8px; z-index: 10; }
-    .mobile-toggle {
-      width: 50px;
-      height: 50px;
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* PARTICLES */
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.5;
+      box-shadow: 0 0 8px var(--glow);
+    }
+
+    /* DONATE BUTTON TOP-LEFT */
+    .top-left {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+    }
+
+    .donate-btn {
+      padding: 12px 16px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(
+        135deg,
+        #000 0%, #000 30%,
+        #fff 30%, #fff 45%,
+        #2e8b57 45%, #2e8b57 70%,
+        #ce1126 70%, #ce1126 100%
+      );
+      box-shadow: 0 0 20px rgba(255,255,255,0.3),
+                  0 0 60px rgba(206,17,38,0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .donate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(255,255,255,0.5),
+                  0 0 90px rgba(206,17,38,0.6);
+    }
+
+    /* MUSIC CONTROLS */
+    .music-control {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      z-index: 10;
+      padding: 12px 16px;
       border-radius: 12px;
-      background: var(--btn-bg);
+      background: var(--button-bg);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255,255,255,0.15);
       cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-size: 14px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .music-control:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px var(--glow);
+    }
+
+    .music-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+    }
+
+    /* PROFILE */
+    .profile-container {
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.2s ease;
-      color: var(--text);
-      font-size: 24px;
     }
-    .mobile-toggle:active { transform: scale(0.95); }
-    .mobile-content {
-      position: absolute;
-      top: 60px;
-      right: 0;
-      background: var(--btn-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 12px;
-      padding: 12px;
+
+    .profile-pic {
+      width: var(--pfp-size);
+      height: var(--pfp-size);
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 30px var(--glow),
+                  0 0 90px rgba(255,255,255,0.25);
+      animation: pulse 2.2s ease-in-out infinite;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.1);
+    }
+
+    /* SOCIALS TOP-RIGHT */
+    .top-right {
+      position: fixed;
+      top: 16px;
+      right: 16px;
       display: flex;
-      flex-direction: column;
       gap: 10px;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-10px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      min-width: 160px;
+      z-index: 10;
     }
-    .mobile-content.open { opacity: 1; pointer-events: all; transform: translateY(0); }
-    .mobile-content .btn { width: 100%; justify-content: center; padding: 12px 16px; }
-    .top-left { left: 8px; top: 8px; }
-    .donate-btn { padding: 10px 12px; font-size: 13px; }
-    .profile-pic { width: 150px; height: 150px; }
-  }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.25); }
-    50% { box-shadow: 0 0 40px rgba(255,255,255,0.6), 0 0 90px rgba(255,255,255,0.35); }
-    100% { box-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.25); }
-  }
-</style>
+
+    .btn {
+      padding: 10px 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text);
+      background: var(--button-bg);
+      backdrop-filter: blur(12px);
+      font-size: 14px;
+      box-shadow: 0 0 12px var(--glow),
+                  inset 0 0 0 1px rgba(255,255,255,0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px var(--glow),
+                  0 0 55px var(--glow);
+    }
+
+    /* MOBILE FIXES */
+    @media (max-width: 600px) {
+      .top-right { 
+        flex-direction: column;
+        right: 8px;
+        top: 8px;
+      }
+      .top-left {
+        left: 8px;
+        top: 8px;
+      }
+      .donate-btn {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+      .btn {
+        padding: 12px 16px;
+        font-size: 15px;
+        min-width: 100px;
+        text-align: center;
+      }
+      .profile-pic { 
+        width: 150px; 
+        height: 150px; 
+      }
+      .music-control {
+        left: 8px;
+        bottom: 8px;
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+    }
+
+    /* PULSE KEYFRAME */
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 20px var(--glow),
+                    0 0 60px rgba(255,255,255,0.25);
+      }
+      50% {
+        box-shadow: 0 0 40px var(--glow),
+                    0 0 90px rgba(255,255,255,0.35);
+      }
+      100% {
+        box-shadow: 0 0 20px var(--glow),
+                    0 0 60px rgba(255,255,255,0.25);
+      }
+    }
+  </style>
 </head>
+
 <body>
-<script>
-const CONFIG = {
-  profilePicture: "https://media.discordapp.net/attachments/1450622083364290734/1463935003829473420/Metal029.jpg",
-  donate: { enabled: true, url: "https://donate.unrwa.org/", label: "Donate to UNRWA (Palestine)" },
-  socials: [
-    { name: "Snapchat", enabled: true, url: "https://www.snapchat.com/add/thomasmortimer?share_id=sVy1oAVIBCQ&locale=en-GB", icon: "snapchat" },
-    { name: "TikTok", enabled: true, url: "https://tiktok.com/@thomasx1x1", icon: "tiktok" }
-  ],
-  music: { enabled: true, mp3: "https://audio.jukehost.co.uk/FGNmR5eFf10k0TxuU3sDMFszAa8lTpxy", volume: 1 }
-};
-const ICONS = {
-  snapchat: '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821..."/></svg>',
-  tiktok: '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02..."/></svg>'
-};
-</script>
+  <!-- CONFIG -->
+  <script>
+    const CONFIG = {
+      profilePicture: "https://media.discordapp.net/attachments/1450622083364290734/1463935003829473420/Metal029.jpg?ex=6973a337&is=697251b7&hm=b5bd1f7f7bca540621c3dcb6931aedd9e3c5508bfed1861222c8799f017d65ba&=&format=webp&width=1023&height=1023",
+      profileVideoUrl: "", // Add your video URL here
+      colours: { background: "#000000", accent: "#ffffff" },
+      donate: { enabled: true, url: "https://donate.unrwa.org/", label: "Donate to UNRWA (Palestine)" },
+      socials: [
+        { name: "Discord", enabled: false, url: "https://discord.gg/2kMqjT5Zxa" },
+        { name: "Snapchat", enabled: true, url: "https://www.snapchat.com/add/thomasmortimer?share_id=sVy1oAVIBCQ&locale=en-GB" },
+        { name: "TikTok", enabled: true, url: "https://tiktok.com/@thomasx1x1" }
+      ],
+      music: { enabled: true, mp3: "https://audio.jukehost.co.uk/FGNmR5eFf10k0TxuU3sDMFszAa8lTpxy", volume: 1 }
+    };
+  </script>
 
-<div class="top-left" id="donate"></div>
-<div class="top-right" id="socials"></div>
-<div class="mobile-tab">
-  <div class="mobile-toggle" id="mobileToggle">☰</div>
-  <div class="mobile-content" id="mobileContent">
-    <div id="mobileSocials"></div>
-    <div class="music-control mobile-music">
-      <span>🔇</span>
-      <span id="mobileMusicStatus">Click to play</span>
-    </div>
+  <!-- UI -->
+  <div class="top-left" id="donate"></div>
+  <div class="top-right" id="socials"></div>
+  <div class="profile-container">
+    <img id="pfp" class="profile-pic">
   </div>
-</div>
+  <div class="music-control" id="musicToggle">
+    <span class="music-icon">🔇</span>
+    <span id="musicStatus">Click to play</span>
+  </div>
 
-<div class="profile-container"><img id="pfp" class="profile-pic"></div>
+  <script>
+    /* COLORS */
+    document.documentElement.style.setProperty("--bg", CONFIG.colours.background);
+    document.documentElement.style.setProperty("--accent", CONFIG.colours.accent);
 
-<div class="music-control" id="desktopMusic">
-  <span>🔇</span>
-  <span id="desktopMusicStatus">Click to play</span>
-</div>
-
-<script>
-const pfp = document.getElementById("pfp");
-pfp.src = CONFIG.profilePicture;
-
-/* Mobile Toggle */
-const mobileToggle = document.getElementById("mobileToggle");
-const mobileContent = document.getElementById("mobileContent");
-mobileToggle.onclick = () => {
-  mobileContent.classList.toggle("open");
-  mobileToggle.textContent = mobileContent.classList.contains("open") ? "✕" : "☰";
-};
-document.addEventListener("click", e => {
-  if(!e.target.closest(".mobile-tab") && mobileContent.classList.contains("open")) {
-    mobileContent.classList.remove("open");
-    mobileToggle.textContent = "☰";
-  }
-});
-
-/* Particles */
-for(let i=0;i<50;i++){
-  const p=document.createElement("div");p.className="particle";
-  p.style.left=Math.random()*100+"vw";
-  p.style.top=Math.random()*100+"vh";
-  document.body.appendChild(p);
-  const data={el:p,x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5};
-  (function animate(){
-    const dx=(window.mx||innerWidth/2)-data.x;
-    const dy=(window.my||innerHeight/2)-data.y;
-    const dist=Math.sqrt(dx*dx+dy*dy);
-    if(dist>0 && dist<150){data.vx-=dx/dist*0.1;data.vy-=dy/dist*0.1;}
-    data.vx*=0.98;data.vy*=0.98;data.x+=data.vx;data.y+=data.vy;
-    if(data.x<0)data.x=innerWidth;if(data.x>innerWidth)data.x=0;
-    if(data.y<0)data.y=innerHeight;if(data.y>innerHeight)data.y=0;
-    p.style.left=data.x+"px";p.style.top=data.y+"px";
-    requestAnimationFrame(animate);
-  })();
-}
-document.onmousemove=e=>{window.mx=e.clientX;window.my=e.clientY;};
-
-/* Donate Button */
-if(CONFIG.donate.enabled){
-  const d=document.createElement("a");
-  d.className="donate-btn";
-  d.href=CONFIG.donate.url;
-  d.target="_blank";
-  d.textContent=CONFIG.donate.label;
-  document.getElementById("donate").appendChild(d);
-}
-
-/* Socials */
-CONFIG.socials.forEach(s=>{
-  if(!s.enabled||!s.url) return;
-  [document.getElementById("socials"),document.getElementById("mobileSocials")].forEach(container=>{
-    const b=document.createElement("a");
-    b.className="btn";b.href=s.url;b.target="_blank";
-    b.innerHTML=(ICONS[s.icon]||"")+`<span>${s.name}</span>`;
-    container.appendChild(b);
-  });
-});
-
-/* Music */
-if(CONFIG.music.enabled && CONFIG.music.mp3){
-  const audio=new Audio(CONFIG.music.mp3);
-  audio.loop=true;audio.volume=CONFIG.music.volume;
-  let isPlaying=false;
-  const ctx=new (AudioContext||webkitAudioContext)();
-  const src=ctx.createMediaElementSource(audio);
-  const analyser=ctx.createAnalyser();
-  analyser.fftSize=256;
-  src.connect(analyser);
-  analyser.connect(ctx.destination);
-  const dataArr=new Uint8Array(analyser.frequencyBinCount);
-  const pulse=()=>{analyser.getByteFrequencyData(dataArr);requestAnimationFrame(pulse);};
-  const toggle=()=>{
-    if(!isPlaying){ctx.resume();audio.play();pulse();isPlaying=true;
-      document.querySelectorAll(".music-control span:first-child").forEach(el=>el.textContent="🔊");
-      document.querySelectorAll("[id$='MusicStatus']").forEach(el=>el.textContent="Playing");
-    } else {audio.pause();isPlaying=false;
-      document.querySelectorAll(".music-control span:first-child").forEach(el=>el.textContent="🔇");
-      document.querySelectorAll("[id$='MusicStatus']").forEach(el=>el.textContent="Paused");
+    /* PROFILE PICTURE */
+    const pfp = document.getElementById("pfp");
+    pfp.src = CONFIG.profilePicture;
+    
+    // Profile picture click to video
+    if(CONFIG.profileVideoUrl) {
+      pfp.addEventListener("click", () => {
+        window.open(CONFIG.profileVideoUrl, "_blank");
+      });
     }
-  };
-  document.getElementById("desktopMusic").onclick=toggle;
-  document.querySelector(".mobile-music").onclick=toggle;
-}
-</script>
+
+    /* PARTICLES */
+    const particleCount = 50;
+    const particles = [];
+    
+    for(let i = 0; i < particleCount; i++) {
+      const particle = document.createElement("div");
+      particle.className = "particle";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      document.body.appendChild(particle);
+      
+      particles.push({
+        el: particle,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5
+      });
+    }
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateParticles() {
+      particles.forEach(p => {
+        const dx = mouseX - p.x;
+        const dy = mouseY - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if(dist < 150) {
+          p.vx -= dx / dist * 0.1;
+          p.vy -= dy / dist * 0.1;
+        }
+        
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        if(p.x < 0) p.x = window.innerWidth;
+        if(p.x > window.innerWidth) p.x = 0;
+        if(p.y < 0) p.y = window.innerHeight;
+        if(p.y > window.innerHeight) p.y = 0;
+        
+        p.el.style.left = p.x + "px";
+        p.el.style.top = p.y + "px";
+      });
+      
+      requestAnimationFrame(animateParticles);
+    }
+    
+    animateParticles();
+
+    /* DONATE BUTTON */
+    if(CONFIG.donate.enabled){
+      const d = document.createElement("a");
+      d.className = "donate-btn";
+      d.href = CONFIG.donate.url;
+      d.target = "_blank";
+      d.textContent = CONFIG.donate.label;
+      document.getElementById("donate").appendChild(d);
+    }
+
+    /* SOCIAL BUTTONS */
+    CONFIG.socials.forEach(s => {
+      if(!s.enabled || !s.url) return;
+      const b = document.createElement("a");
+      b.className = "btn";
+      b.href = s.url;
+      b.target = "_blank";
+      b.textContent = s.name;
+      document.getElementById("socials").appendChild(b);
+    });
+
+    /* BACKGROUND MUSIC + GLOW PULSE */
+    if(CONFIG.music.enabled && CONFIG.music.mp3){
+      const audio = new Audio(CONFIG.music.mp3);
+      audio.loop = true;
+      audio.volume = CONFIG.music.volume;
+      let isPlaying = false;
+
+      const musicToggle = document.getElementById("musicToggle");
+      const musicStatus = document.getElementById("musicStatus");
+      const musicIcon = musicToggle.querySelector(".music-icon");
+
+      // Web Audio API for glow pulse
+      const ctx = new (window.AudioContext||window.webkitAudioContext)();
+      const source = ctx.createMediaElementSource(audio);
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 256;
+      source.connect(analyser);
+      analyser.connect(ctx.destination);
+      const data = new Uint8Array(analyser.frequencyBinCount);
+
+      const pulse = () => {
+        analyser.getByteFrequencyData(data);
+        const avg = data.reduce((a,b)=>a+b,0)/data.length;
+        const glow = Math.min(1, avg/120);
+        document.documentElement.style.setProperty("--glow", `rgba(255,255,255,${0.4 + glow*0.4})`);
+        requestAnimationFrame(pulse);
+      };
+
+      musicToggle.addEventListener("click", () => {
+        if(!isPlaying) {
+          ctx.resume();
+          audio.play();
+          pulse();
+          isPlaying = true;
+          musicIcon.textContent = "🔊";
+          musicStatus.textContent = "Playing";
+        } else {
+          audio.pause();
+          isPlaying = false;
+          musicIcon.textContent = "🔇";
+          musicStatus.textContent = "Paused";
+        }
+      });
+    }
+  </script>
 </body>
 </html>
-
-
