@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
+            background-color: #ffffff;
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -25,7 +25,7 @@
             font-weight: bold;
             letter-spacing: 2px;
             margin-bottom: 20px;
-            color: #00adb5;
+            color: #000000;
         }
 
         .timer {
@@ -78,4 +78,32 @@
         </div>
     </div>
 
-    <script
+    <script>
+        // Set to exactly March 10, 2028 (634 days from June 2026)
+        const countdownDate = new Date("Mar 10, 2028 00:00:00").getTime();
+
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            // Calculations
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Inject into HTML
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                document.querySelector(".timer").innerHTML = "<h2>TIME'S UP</h2>";
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>
