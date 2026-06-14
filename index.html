@@ -1,109 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffffff;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .countdown-container {
-            text-align: center;
-        }
+  body {
+    background: #000;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+  }
 
-        h1 {
-            font-size: 3.5rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            color: #000000;
-        }
+  .pixel {
+    font-size: clamp(64px, 12vw, 140px);
+    font-weight: 200;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
 
-        .timer {
-            display: flex;
-            gap: 20px;
-            font-size: 2.5rem;
-            font-weight: bold;
-            justify-content: center;
-        }
+  .countdown-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
 
-        .time-box {
-            background: #1e1e1e;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            min-width: 80px;
-        }
+  .units {
+    display: flex;
+    gap: 32px;
+    align-items: flex-end;
+  }
 
-        .label {
-            display: block;
-            font-size: 0.9rem;
-            color: #888;
-            text-transform: uppercase;
-            margin-top: 5px;
-        }
-    </style>
+  .unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .unit-value {
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 200;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: #fff;
+    min-width: 2ch;
+    text-align: center;
+  }
+
+  .unit-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    font-weight: 400;
+  }
+
+  .sep {
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 200;
+    color: rgba(255,255,255,0.15);
+    padding-bottom: 18px;
+  }
+
+  .progress-bar {
+    width: min(400px, 80vw);
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: rgba(255,255,255,0.5);
+    transition: width 1s linear;
+  }
+
+  .end-date {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+  }
+</style>
 </head>
 <body>
 
-    <div class="countdown-container">
-        <h1>x1x1</h1>
-        
-        <div class="timer">
-            <div class="time-box">
-                <span id="days">00</span>
-                <span class="label">Days</span>
-            </div>
-            <div class="time-box">
-                <span id="hours">00</span>
-                <span class="label">Hours</span>
-            </div>
-            <div class="time-box">
-                <span id="minutes">00</span>
-                <span class="label">Mins</span>
-            </div>
-            <div class="time-box">
-                <span id="seconds">00</span>
-                <span class="label">Secs</span>
-            </div>
-        </div>
+<div class="pixel">x1x1</div>
+
+<div class="countdown-wrap">
+  <div class="units">
+    <div class="unit">
+      <span class="unit-value" id="days">--</span>
+      <span class="unit-label">days</span>
     </div>
+    <span class="sep">:</span>
+    <div class="unit">
+      <span class="unit-value" id="hours">--</span>
+      <span class="unit-label">hours</span>
+    </div>
+    <span class="sep">:</span>
+    <div class="unit">
+      <span class="unit-value" id="mins">--</span>
+      <span class="unit-label">minutes</span>
+    </div>
+    <span class="sep">:</span>
+    <div class="unit">
+      <span class="unit-value" id="secs">--</span>
+      <span class="unit-label">seconds</span>
+    </div>
+  </div>
 
-    <script>
-        // Set to exactly March 10, 2028 (634 days from June 2026)
-        const countdownDate = new Date("Mar 10, 2028 00:00:00").getTime();
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress"></div>
+  </div>
 
-        const timerInterval = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = countdownDate - now;
+  <div class="end-date" id="end-label"></div>
+</div>
 
-            // Calculations
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+<script>
+  const START = new Date();
+  const TOTAL_MS = 700 * 24 * 60 * 60 * 1000;
+  const END = new Date(START.getTime() + TOTAL_MS);
 
-            // Inject into HTML
-            document.getElementById("days").innerText = days.toString().padStart(2, '0');
-            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
-            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+  const pad = n => String(n).padStart(2, '0');
 
-            if (distance < 0) {
-                clearInterval(timerInterval);
-                document.querySelector(".timer").innerHTML = "<h2>TIME'S UP</h2>";
-            }
-        }, 1000);
-    </script>
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('end-label').textContent =
+    `${END.getDate()} ${months[END.getMonth()]} ${END.getFullYear()}`;
 
+  function tick() {
+    const now = new Date();
+    const diff = END - now;
+
+    if (diff <= 0) {
+      document.getElementById('days').textContent = '00';
+      document.getElementById('hours').textContent = '00';
+      document.getElementById('mins').textContent = '00';
+      document.getElementById('secs').textContent = '00';
+      document.getElementById('progress').style.width = '100%';
+      return;
+    }
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById('days').textContent = pad(d);
+    document.getElementById('hours').textContent = pad(h);
+    document.getElementById('mins').textContent = pad(m);
+    document.getElementById('secs').textContent = pad(s);
+
+    const elapsed = TOTAL_MS - diff;
+    const pct = (elapsed / TOTAL_MS) * 100;
+    document.getElementById('progress').style.width = pct.toFixed(4) + '%';
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>
 </body>
 </html>
