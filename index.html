@@ -127,9 +127,8 @@
 </div>
 
 <script>
-  const START = new Date();
-  const TOTAL_MS = 700 * 24 * 60 * 60 * 1000;
-  const END = new Date(START.getTime() + TOTAL_MS);
+  const END = new Date('2028-05-14T00:00:00');
+  const TOTAL_MS = END - new Date('2026-06-14T00:00:00');
 
   const pad = n => String(n).padStart(2, '0');
 
